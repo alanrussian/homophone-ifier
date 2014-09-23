@@ -22,6 +22,8 @@ def create_dictionary():
       if not matches:
         continue
 
+      # These need to be lower case, but only do this to dictionary key in case the word is an
+      # acronym.
       word = matches[0][0]
       plural_word = matches[0][2]
 
@@ -31,9 +33,9 @@ def create_dictionary():
       words.append(word)
 
     for word in words:
-      dictionary[word] = [x for x in words if x is not word]
+      dictionary[word.lower()] = [x for x in words if x is not word]
     for plural_word in plural_words:
-      dictionary[plural_word] = [x for x in plural_words if x is not plural_word]
+      dictionary[plural_word.lower()] = [x for x in plural_words if x is not plural_word]
 
   return dictionary
 
@@ -46,10 +48,15 @@ def main():
   words = text.split(" ")
 
   for i in range(len(words)):
-    word = words[i]
+    word = words[i].lower()
 
     if word in dictionary:
-      words[i] = random.choice(dictionary[word])
+      # Copy first letter capitalization.
+      new_word = random.choice(dictionary[word])
+      if words[i][0].isupper():
+        new_word = new_word[0].upper() + new_word[1:]
+
+      words[i] = new_word
 
   text = " ".join(words)
   print(text)
