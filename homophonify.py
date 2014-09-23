@@ -43,12 +43,18 @@ def main():
   dictionary = create_dictionary()
 
   text = input("Enter some text: ")
-  
-  # TODO: Handle punctuation.
+
   words = text.split(" ")
 
   for i in range(len(words)):
-    word = words[i].lower()
+    word_extraction = "^([\"\'‘’“”<>]?)((\w|[-'])+?)([.,?!]?[\'\"‘’“”<>]?[.,?!]?)$"
+    matches = re.findall(word_extraction, words[i].lower())
+    if not matches:
+      continue
+
+    prefix = matches[0][0]
+    word = matches[0][1]
+    suffix = matches[0][3]
 
     if word in dictionary:
       # Copy first letter capitalization.
@@ -56,7 +62,7 @@ def main():
       if words[i][0].isupper():
         new_word = new_word[0].upper() + new_word[1:]
 
-      words[i] = new_word
+      words[i] = prefix + new_word + suffix
 
   text = " ".join(words)
   print(text)
