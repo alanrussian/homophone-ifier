@@ -25,6 +25,7 @@ def main():
     word_safe = word.lower()
     if word_safe in dictionary:
       # Copy first letter capitalization.
+      # TODO: Handle case of "I".
       new_word = random.choice(dictionary[word_safe])
       if word[0].isupper():
         new_word = new_word[0].upper() + new_word[1:]
