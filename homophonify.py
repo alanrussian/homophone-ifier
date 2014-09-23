@@ -14,7 +14,7 @@ def main():
 
   for i in range(len(words)):
     word_extraction = "^([\"\'‘’“”<>]?)((\w|[-'])+?)([.,?!]?[\'\"‘’“”<>]?[.,?!]?)$"
-    matches = re.findall(word_extraction, words[i].lower())
+    matches = re.findall(word_extraction, words[i])
     if not matches:
       continue
 
@@ -22,10 +22,11 @@ def main():
     word = matches[0][1]
     suffix = matches[0][3]
 
-    if word in dictionary:
+    word_safe = word.lower()
+    if word_safe in dictionary:
       # Copy first letter capitalization.
-      new_word = random.choice(dictionary[word])
-      if words[i][0].isupper():
+      new_word = random.choice(dictionary[word_safe])
+      if word[0].isupper():
         new_word = new_word[0].upper() + new_word[1:]
 
       words[i] = prefix + new_word + suffix
